@@ -42,12 +42,19 @@ function selectImg(evt) {
 }
 
 function createModal(urlOfOriginal) {
-  instance = basicLightbox.create(`
-    <img src="${urlOfOriginal}" width="800" height="600">
-`);
-  instance.show();
+  instance = basicLightbox.create(
+    `<img src="${urlOfOriginal}" width="800" height="600">`,
+    {
+      onShow: () => {
+        refs.body.addEventListener("keydown", closeModal);
+      },
+      onClose: () => {
+        refs.body.removeEventListener("keydown", closeModal);
+      },
+    }
+  );
 
-  refs.body.addEventListener("keydown", closeModal);
+  instance.show();
 }
 
 function closeModal(evt) {
